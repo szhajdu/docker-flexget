@@ -1,14 +1,20 @@
 name: Get latest flexget version
 
-on: 
+on:
   schedule:
-    - cron:  '0 10 * * *'
+    - cron:  '* * * * *'
 
 jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+      - name: Setup Git User
+        run: |
+          git config --global user.name ${{ secrets.GIT_USER }}
+          git config --global user.email ${{ secrets.GIT_EMAIL }}
       - name: Fetch release version
         run: |
           curl -sL https://api.github.com/repos/Flexget/Flexget/tags | \
@@ -20,9 +26,5 @@ jobs:
       - name: Commit latest release version
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          git config --global user.name 'Szabolcs Hajdu'
-          git config --global user.email 'sabee0418@gmail.com'
-          git remote set-url origin https://x-access-token:${{ secrets.REPO_SCOPED_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout "${GITHUB_REF:11}"
           git commit -am "Auto: update Flexget version"
           git push
