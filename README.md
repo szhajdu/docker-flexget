@@ -1,6 +1,6 @@
 # szhajdu/docker-flexget
 
-Alpine based container that running [Flexget](https://www.flexget.com/) and [FFmpeg](https://www.ffmpeg.org/).
+Alpine based container that running [Flexget](https://www.flexget.com/) with [youtube-dl](http://ytdl-org.github.io/youtube-dl/) and [FFmpeg](https://www.ffmpeg.org/).
 
 ## Build image
 

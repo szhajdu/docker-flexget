@@ -21,6 +21,10 @@ RUN apk add --no-cache \
 RUN pip3 install --no-cache-dir -U pip && \
     pip3 install flexget==${FLEXGET_VERSION}
 
+# Install YouTube Downloader
+RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl && \
+    chmod a+rx /usr/local/bin/youtube-dl
+
 # Clean up
 RUN apk del .build-deps && \
     rm -rf /var/cache/*
