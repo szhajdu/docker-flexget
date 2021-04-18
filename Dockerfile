@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 
-ARG FLEXGET_VERSION=3.1.109
+ARG FLEXGET_VERSION=3.1.131
 
 # Install basic packages
 RUN apk update && \
@@ -10,8 +10,22 @@ RUN apk update && \
         libxslt-dev \
         tzdata && \
     apk add --no-cache --virtual .build-deps \
+        autoconf \
+        automake \
+        freetype-dev \
+        g++ \
         gcc \
-        libc-dev
+        jpeg-dev \
+        lcms2-dev \
+        libffi-dev \
+        libpng-dev \
+        libwebp-dev \
+        linux-headers \
+        make \
+        openjpeg-dev \
+        openssl-dev \
+        tiff-dev \
+        zlib-dev
 
 # Install runtime packages
 RUN apk add --no-cache \
@@ -27,7 +41,12 @@ RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube
 
 # Clean up
 RUN apk del .build-deps && \
-    rm -rf /var/cache/*
+    rm -rf \
+        /var/cache/* \
+        /root/.cache \
+        /tmp/* \
+        /build \
+        /root/packages
 
 # Expose Web UI port and config folder
 EXPOSE 5050/tcp
@@ -36,9 +55,8 @@ VOLUME /config
 # Flexget looks for config.yml automatically inside:
 # /root/.flexget, /root/.config/flexget
 # Since the uid/gid for user can be changed on the fly, set 777.
-RUN ln -s /config /root/.flexget &&\
-    chmod 777 /root/ && \
-    chmod 777 /root/.flexget/
+RUN ln -s /config /root/.flexget && \
+    chmod 777 /root/
 
 # Add start script
 COPY start.sh /root/start.sh
