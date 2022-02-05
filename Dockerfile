@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 
-ARG FLEXGET_VERSION=3.2.16
+ARG FLEXGET_VERSION=3.3.20
 
 # Install basic packages
 RUN apk update && \
