@@ -50,7 +50,9 @@ jobs:
           build-args: |
             FLEXGET_VERSION=${{ steps.get_version.outputs.TAG }}
           push: true
-          tags: ghcr.io/szhajdu/flexget:latest,ghcr.io/szhajdu/flexget:${{ steps.get_version.outputs.TAG }}
+          tags: |
+            ghcr.io/szhajdu/flexget:latest
+            ghcr.io/szhajdu/flexget:${{ steps.get_version.outputs.TAG }}
           platforms: linux/amd64
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
