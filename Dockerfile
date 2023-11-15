@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.11-alpine
 
 ARG FLEXGET_VERSION=3.9.19
 
