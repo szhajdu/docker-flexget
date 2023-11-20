@@ -20,11 +20,10 @@ jobs:
           curl -sL https://api.github.com/repos/Flexget/Flexget/tags | \
           jq -r ".[0].name" | \
           sed "s/^v//" > flexget-latest-version
-      - name: Check for modified files
-        id: git-check
-        run: echo "MODIFIED=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-      - name: Commit latest release version
-        if: steps.git-check.outputs.MODIFIED == 'true'
+      - name: Update FLEXGET_VERSION in Dockerfile
         run: |
-          git commit -am "Auto: update Flexget version"
-          git push
+          VERSION=$(cat flexget-latest-version)
+          sed -i "s/^ARG FLEXGET_VERSION=.*/ARG FLEXGET_VERSION=$VERSION/" Dockerfile
+      - name: Commit latest release version
+        run: |
+          git diff --exit-code || git commit -am "Auto: update Flexget version" && git push
